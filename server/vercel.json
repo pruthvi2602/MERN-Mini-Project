@@ -8,8 +8,8 @@
   ],
   "routes": [
      {
-       "src": "/router/bookRouter.js",
-       "dest": "/router/bookRouter.js"
+       "src": "/router/posts.js",
+       "dest": "/router/posts.js"
      },
     {
       "src": "/(.*)",
