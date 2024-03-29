@@ -15,7 +15,7 @@ app.use(cors());
 app.use('/posts', postRoutes);
 
 // add connection string for mongodb
-const CONNECTION_URL = '    ';
+const CONNECTION_URL = 'mongodb+srv://nandan:nandan1234@nandan.gnlqsjc.mongodb.net/?retryWrites=true&w=majority&appName=nandan';
 const PORT = process.env.PORT|| 5000;
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
