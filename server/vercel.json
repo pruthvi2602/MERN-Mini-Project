@@ -7,10 +7,7 @@
     }
   ],
   "routes": [
-     {
-       "src": "/router/posts.js",
-       "dest": "/router/posts.js"
-     },
+
     {
       "src": "/(.*)",
       "dest": "/"
