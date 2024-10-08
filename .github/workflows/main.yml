@@ -6,6 +6,7 @@ on:
       - main
 
 jobs:
+  # Job for building and deploying the client side (React App)
   build-client:
     name: Build and Deploy Client
     runs-on: ubuntu-latest
@@ -14,21 +15,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
+      # Fix the OpenSSL issue for Node.js v17+
+      - name: Set NODE_OPTIONS for Webpack compatibility
+        run: echo "NODE_OPTIONS=--openssl-legacy-provider" >> $GITHUB_ENV
+
+      # Install client dependencies
       - name: Install client dependencies
         run: |
           cd client
           npm install
 
+      # Build client
       - name: Build client
         run: |
           cd client
           npm run build
 
+      # Deploy client to Vercel
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
@@ -39,6 +48,7 @@ jobs:
           vercel-org-id: your-vercel-org-id
           vercel-team-id: your-vercel-team-id # Optional
 
+  # Job for deploying the server side (Node.js + Express API)
   deploy-server:
     name: Deploy Server
     runs-on: ubuntu-latest
@@ -47,23 +57,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Set up Node.js for the server side
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
+      # Install server dependencies
       - name: Install server dependencies
         run: |
           cd server
           npm install
 
+      # Install the Heroku CLI for deployment
       - name: Install Heroku CLI
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
+        run: curl https://cli-assets.heroku.com/install.sh | sh
 
+      # Deploy to Heroku
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: your-heroku-app-name
-          heroku_email: your-heroku-email
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} # Set your Heroku app name here
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
